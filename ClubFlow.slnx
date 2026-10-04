@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Application/Application.csproj" Id="a23d6f0e-e9ec-46e7-b70d-22a81d52d9ac" />
+  <Project Path="ClubFlow/WebAPI.csproj" />
+  <Project Path="Domain/Domain.csproj" Id="9f80c0d0-325f-464a-a7c4-f5a11739eebf" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="e3681139-256d-4814-8331-a619b07309fe" />
+</Solution>
