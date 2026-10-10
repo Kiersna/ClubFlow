@@ -14,6 +14,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Moje API v1");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -21,5 +25,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
-
+app.MapGet("/api/health", () => Results.Ok("API Dziala"));
 app.Run();
