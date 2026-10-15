@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MediatR;
+using System.Linq.Dynamic.Core;
+using Application.Common;
 namespace Application.Clubs.Queries
 {
-    public record GetClubByNameQuery(string clubName, string clubCity) : IRequest<ClubDto>
+    public record GetClubByNameQuery(int Page, int PageSize, string clubName, string clubCity) : IRequest<Application.Common.PagedResult<ClubDto>>
     {
     }
 }

@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebAPI.Controllers // ten endpoint poki co zakomentowany bo on jest bez cqrs wiec chyba go usune ale potrzebowalem do testow 
+namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/clubs")]
@@ -22,7 +22,7 @@ namespace WebAPI.Controllers // ten endpoint poki co zakomentowany bo on jest be
         [HttpGet] 
         public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubByName([FromQuery] string clubName, [FromQuery] string clubCity, CancellationToken cancellationToken)
         {
-            var query = new GetClubByNameQuery(clubName, clubCity);
+            var query = new GetClubByNameQuery(1, 10, clubName, clubCity);
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }
