@@ -20,9 +20,19 @@ namespace WebAPI.Middlewares
             }
             catch (Exception ex)
             {
+                var statusCode = HttpStatusCode.InternalServerError;
+                var message = "Wystąpił wewnętrzny błąd serwera.";
+
+                // Obsługa błędu braku zasobu / strony (404)
+                if (ex is KeyNotFoundException)
+                {
+                    statusCode = HttpStatusCode.NotFound;
+                    message = ex.Message; // Wiadomość z handlera: "Strona X nie istnieje..."
+                }
                 _logger.LogError(ex, ex.Message);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                var response= new { message = "Wystąpił wewnętrzny błąd serwera." };
+                context.Response.StatusCode = (int)statusCode;
+                context.Response.ContentType = "application/json";
+                var response= new { message = message };
                 await context.Response.WriteAsJsonAsync(response);
             }
         }

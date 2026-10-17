@@ -20,9 +20,9 @@ namespace WebAPI.Controllers
             //_context = context;
         }
         [HttpGet] 
-        public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubByName([FromQuery] string clubName, [FromQuery] string clubCity, CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubByName([FromQuery] string clubName, [FromQuery] string clubCity, [FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? sortBy, [FromQuery] string? sortDirection, CancellationToken cancellationToken)
         {
-            var query = new GetClubByNameQuery(1, 10, clubName, clubCity);
+            var query = new GetClubByNameQuery(page, pageSize, clubName, clubCity, sortBy, sortDirection);
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }

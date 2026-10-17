@@ -24,12 +24,23 @@ namespace Application.Clubs.Handlers
         public async Task<Application.Common.PagedResult<ClubDto>> Handle(GetClubByNameQuery request, CancellationToken cancellationToken)
         {
             var query = _dbContext.Clubs.Where(x => x.Name.Contains(request.clubName) && x.City.Contains(request.clubCity));
+            bool isDescending = request.SortDirection?.Equals("desc", StringComparison.OrdinalIgnoreCase) ?? false;
+            query = (request.SortBy?.ToLower()) switch
+            {
+                "createdAt" => isDescending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt), // czemu nie OrderBy(CreatedAt) - bo dzieki tej krotkiej lambdzie szukamy wewnatrz obiektu a tak szukalibysmy zmiennej CreatedAt wewnatrz metody 
+                "name" => isDescending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name)
+            };
             var totalItems = await query.CountAsync(cancellationToken);
             var items = await query
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ClubDto(x.Name, x.City))
                 .ToListAsync(cancellationToken);
+            var totalPages = (int)Math.Ceiling(totalItems / (double)request.PageSize);
+            if (request.Page > totalPages)
+            { 
+                throw new KeyNotFoundException($"Strona {request.Page} nie istnieje. Ostatnia strona to {totalPages}.");
+            }
             return new Application.Common.PagedResult<ClubDto>(items, totalItems, request.Page, request.PageSize);
         }
     }
