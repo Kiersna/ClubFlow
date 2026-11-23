@@ -1,5 +1,6 @@
 ﻿using Application.Clubs.DTOs;
 using Application.Clubs.Queries;
+using Domain.Models;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ namespace WebAPI.Controllers
             //_context = context;
         }
         [HttpGet] 
-        public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubByName([FromQuery] string clubName, [FromQuery] string clubCity, [FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string? sortBy, [FromQuery] string? sortDirection, CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<ClubDto>>> GetClubByName([FromQuery] ClubSearchDto szukanyKlub, CancellationToken cancellationToken)
         {
-            var query = new GetClubByNameQuery(page, pageSize, clubName, clubCity, sortBy, sortDirection);
+            var query = new GetClubByNameQuery(szukanyKlub);
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }

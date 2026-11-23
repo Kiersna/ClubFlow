@@ -5,9 +5,10 @@ using System.Text;
 using MediatR;
 using System.Linq.Dynamic.Core;
 using Application.Common;
+using Domain.Models;
 namespace Application.Clubs.Queries
 {
-    public record GetClubByNameQuery(int Page, int PageSize, string clubName, string clubCity, string? SortBy, string? SortDirection) : IRequest<Application.Common.PagedResult<ClubDto>>
+    public record GetClubByNameQuery(ClubSearchDto szukanyKlub) : IRequest<Application.Common.PagedResult<ClubDto>>
     {
     }
 }
